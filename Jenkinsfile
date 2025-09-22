@@ -5,7 +5,7 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/jtaraya/gallery.git'
             }
@@ -29,6 +29,18 @@ pipeline {
                     sh 'npm test'
                 }
             }
+
+            post {
+                failure {
+                    emailext (
+                        to: 'jacobtaraya@gmail.com',
+                        subject: 'Jenkins Pipeline Failed - Test Stage',
+                        body: 'The test stage in Jenkins pipeline has failed. Please check the console output for details.',
+                        attachLog: true
+                    )
+                }
+            }
+        }
        
         stage('Deploy to Render') {
             steps {
