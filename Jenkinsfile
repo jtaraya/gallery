@@ -1,52 +1,61 @@
 pipeline {
-  agent any
-
-  triggers {
-    // From GitHub webhook to trigger the pipeline
-    githubPush()
-  }
-
-  stages {
-    stage('Checkout') {
-      steps {
-        git branch: 'master', url: 'https://github.com/jtaraya/gallery.git'
-      }
+    agent any
+    tools {
+        nodejs 'nodejs-18'   
     }
 
-    stage('Install Dependencies') {
-      steps {
-        script {
-          if (isUnix()) {
-            sh 'npm install'
-          } else {
-            bat 'npm install'
-          }
-        }
-      }
-    }
-
-    stage('Deploy to Render') {
-      steps {
-        withCredentials([string(credentialsId: 'render-deploy-hook')]) {
-          script {
-            if (isUnix()) {
-              sh 'curl -X POST render-deploy-hook'
-            } else {
-              bat 'curl -X POST render-deploy-hook'
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master', url: 'https://github.com/jtaraya/gallery.git'
             }
-          }
         }
-      }
+
+        stage('Install Dependencies') {              
+           steps {                                  
+                echo 'Installing Node.js dependencies...'                                      
+                 sh 'npm install'                      
+            }                                        
+        } 
+       
+        stage('Install Dependencies') {              
+            steps {                                  
+                echo 'Installing Node.js dependencies...'                                      
+                sh 'npm install'                      
+            }                                        
+        }
+       
+        stage('Deploy to Render') {
+            steps {
+                withCredentials([string(credentialsId: 'gallery-render-hook', variable: 'DEPLOY_HOOK')]) {
+                    sh 'curl -X POST $DEPLOY_HOOK'
+                }
+            }
+        }
     }
-  }
+
+    post {
+        success {
+            echo 'Deployment to Render was successful!'
+        }
+        failure {
+            echo 'Deployment to Render failed.'
+        }
+    }
 }
 
-  post {
-    success {
-      echo 'Deployment successful!'
+post {
+        success {
+            withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_WEBHOOK')]) {
+                sh '''
+                    curl -X POST -H 'Content-type: application/json' \
+                    --data '{"text":"✅ Jenkins Pipeline Success! Build ID: '${BUILD_NUMBER}' | Render URL: https://gallery-gt1r.onrender.com"}' \
+                    $SLACK_WEBHOOK
+                '''
+            }
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
     }
-    failure {
-      echo 'Deployment failed.'
-    }
-  }
 
