@@ -76,6 +76,8 @@ gallery/
 └── package-lock.json  # Exact dependency versions
 
 Getting Started
+0. Folk repository
+
 1. Clone the repository
 git clone <your-repo-url>
 cd <project-folder>
