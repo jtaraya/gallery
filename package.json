@@ -20,7 +20,7 @@
     "mongodb": "^5.9.0",
     "mongoose": "^8.3.2",
     "multer": "^2.0.2",
-    "uuid": "^8.1.0"
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "chai": "^3.2.0",
@@ -28,4 +28,3 @@
     "mocha": "^11.7.2"
   }
 }
-
