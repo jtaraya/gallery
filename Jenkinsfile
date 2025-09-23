@@ -66,8 +66,7 @@ post {
             withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_WEBHOOK')]) {
                 sh '''
                     curl -X POST -H 'Content-type: application/json' \
-                    --data '{"text":"✅ Jenkins Pipeline Success! Build ID: '${BUILD_NUMBER}' | Render URL: https://gallery-.onrender.com"}' \
-                    $SLACK_WEBHOOK
+                    --data '{"text":"✅ Jenkins Pipeline Success! Build ID: '${BUILD_NUMBER}' 
                 '''
             }
         }
