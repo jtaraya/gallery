@@ -28,6 +28,7 @@ Implemented using Jenkins, MongoDB
 - **Templating/views**: (adjust if using EJS, Pug, Handlebars, etc.)  
 - **Configuration**: `_config.js`  
 - **Package management**: npm  
+- **Deploy** Render via webhook
 
 ---
 
