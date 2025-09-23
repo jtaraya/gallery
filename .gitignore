@@ -1,7 +1,2 @@
 node_modules/.env
-node_modules/.cache
-node_modules/.eslintcache
-node_modules/.nyc_output
-node_modules/.vscode-test
-node_modules/coverage
-node_modules/coverage-final.json
+node_modules/
