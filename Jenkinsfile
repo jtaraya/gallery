@@ -32,12 +32,14 @@ pipeline {
 
             post {
                 failure {
-                    emailext (
+                    emailText (
                         to: 'jacobtaraya@gmail.com',
                         subject: 'Jenkins Pipeline Failed - Test Stage',
                         body: 'The test stage in Jenkins pipeline has failed. Please check the console output for details.',
                         attachLog: true
                     )
+
+                    //set up to use slack instead of email
                 }
             }
         }
@@ -66,7 +68,8 @@ post {
             withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_WEBHOOK')]) {
                 sh '''
                     curl -X POST -H 'Content-type: application/json' \
-                    --data '{"text":"✅ Jenkins Pipeline Success! Build ID: '${BUILD_NUMBER}' 
+                    --data '{"text":"✅ Jenkins Pipeline Success! Build ID: '${BUILD_NUMBER}' | Render URL: https://gallery-crju.onrender.com/}' \
+                    $SLACK_WEBHOOK
                 '''
             }
         }
