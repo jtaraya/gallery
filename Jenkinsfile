@@ -32,7 +32,7 @@ pipeline {
 
             post {
                 failure {
-                    emailText (
+                    emailext (
                         to: 'jacobtaraya@gmail.com',
                         subject: 'Jenkins Pipeline Failed - Test Stage',
                         body: 'The test stage in Jenkins pipeline has failed. Please check the console output for details.',
