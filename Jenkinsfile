@@ -1,80 +1,77 @@
 pipeline {
     agent any
-    tools {
-        nodejs 'nodejs-22'   
-    }
+        tools {
+          nodejs 'nodeJs-24'
+        }
 
+    triggers {
+        githubPush() // Trigger build on GitHub push
+    }
+// Build Stages
     stages {
-        stage('checkout') {
+        stage('Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/jtaraya/gallery.git'
             }
         }
 
-        stage('Install Dependencies') {              
-           steps {                                  
-                echo 'Installing Node.js dependencies...'                                      
-                 sh 'npm install'                      
-            }                                        
-        } 
-       
-        stage('Test') {
+        stage('Install Dependencies') {
             steps {
-                withCredentials([
-                    string(credentialsId: 'mongo-username', variable: 'MONGO_USERNAME'),
-                    string(credentialsId: 'mongo-password', variable: 'MONGO_PASSWORD'),
-                    string(credentialsId: 'mongo-cluster', variable: 'MONGO_CLUSTER')
-                ]) {
-                    echo 'Running tests...'
-                    sh 'npm test'
-                }
-            }
-
-            post {
-                failure {
-                    emailext (
-                        to: 'jacobtaraya@gmail.com',
-                        subject: 'Jenkins Pipeline Failed - Test Stage',
-                        body: 'The test stage in Jenkins pipeline has failed. Please check the console output for details.',
-                        attachLog: true
-                    )
-
-                    //set up to use slack instead of email
-                }
+                sh 'npm install'
             }
         }
-       
+
+        stage('Running Test') {
+            steps {
+                sh 'npm test'
+            }
+        }
+
         stage('Deploy to Render') {
             steps {
-                withCredentials([string(credentialsId: 'gallery-render-hook', variable: 'DEPLOY_HOOK')]) {
+                withCredentials([string(credentialsId: 'render-deploy-hook', variable: 'DEPLOY_HOOK')]) {
                     sh 'curl -X POST $DEPLOY_HOOK'
                 }
             }
         }
     }
-
     post {
-        success {
-            echo 'Deployment to Render was successful!'
+        always {
+            echo 'Notification stage executed.'
         }
+        // Success deployment notification
+        success {
+            emailext(
+                to: 'jacobtaraya@gmail.com',
+                subject: "Build: ${currentBuild.fullDisplayName} succeeded!\n View deployed app: https://gallery-crju.onrender.com",
+                body: "The deployment was successful. Check the details at ${env.BUILD_URL}"
+            )
+
+            slackSend(
+                channel: '#jacob_ip',
+                tokenCredentialId: 'slack-webhook',
+                color: 'good',
+                message: "Build: ${currentBuild.fullDisplayName} succeeded!\n View deployed app: https://gallery-crju.onrender.com"
+            )
+
+        }
+        // Failure deployment notification
         failure {
-            echo 'Deployment to Render failed.'
+            // email notification
+            emailext(
+                to: 'jacobtaraya@gmail.com',
+                subject: "Failed Deployment: ${currentBuild.fullDisplayName}",
+                body: "The deployment failed. Check the details at ${env.BUILD_URL}"
+            )
+            // slack notification
+            slackSend(
+                channel: 'jacob_ip',
+                tokenCredentialId: 'slack-webhook',
+                color: 'danger',
+                message: "FAILURE: ${env.JOB_NAME} #${env.BUILD_NUMBER} failed.\n${env.BUILD_URL}"
+            )
+
         }
     }
+
 }
-
-post {
-        success {
-            withCredentials([string(credentialsId: 'slack-webhook', variable: 'SLACK_WEBHOOK')]) {
-                sh '''
-                    curl -X POST -H 'Content-type: application/json' \
-                    --data '{"text":"✅ Jenkins Pipeline Success! Build ID: '${BUILD_NUMBER}' | Render URL: https://gallery-crju.onrender.com/}' \
-                    $SLACK_WEBHOOK
-                '''
-            }
-        }
-        failure {
-            echo 'Pipeline failed!'
-        }
-    }
-
