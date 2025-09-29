@@ -2,6 +2,8 @@
 
 Image gallery web application.  CI/CD Pipeline Project
 
+## Live  : https://gallery-crju.onrender.com/
+
 ## About
 
 A Nodejs gallery web application that allows users to browse images in a clean, organized view. It provides routes to display images, uses a server backend, and has front‑end views for displaying content.
@@ -44,6 +46,8 @@ Make sure you have installed:
 - npm  
 
 ### Installation
+<img width="1186" height="644" alt="Screenshot from 2025-09-29 09-15-04" src="https://github.com/user-attachments/assets/3496f82a-6289-4794-b373-14b735b5e2a2" />
+
 
 
 ```bash
