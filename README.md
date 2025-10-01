@@ -3,6 +3,8 @@
 Image gallery web application.  CI/CD Pipeline Project
 
 ## Live  : https://gallery-crju.onrender.com/
+<img width="1069" height="609" alt="Screenshot from 2025-10-01 05-51-33" src="https://github.com/user-attachments/assets/c1cc1107-d9ca-4666-a0c0-53e0c6da71af" />
+
 
 ## About
 
