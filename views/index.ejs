@@ -49,15 +49,20 @@
         <hr>
         <br>
         
-          <div class="row">
-            <% images.forEach(function(image){ %>
-
-              <div class="column">
-
-                <a href="/image/<%= image._id %>"> <img src="<%= image.path %>" class="responsive-img" alt="<%= image.name %>"> </a>
-              </div>
-            <% }); %>  
-          </div>
+          <!-- In views/index.ejs, replace the images section with: -->
+<div class="row">
+<% if (typeof images !== 'undefined' && images && images.length > 0) { %>
+    <% images.forEach(function(image){ %>
+    <div class="column">
+        <a href="/image/<%= image._id %>"> 
+            <img src="<%= image.path %>" class="responsive-img" alt="<%= image.name %>"> 
+        </a>
+    </div>
+    <% }); %>
+<% } else { %>
+    <p style="text-align: center; color: #666;">No images uploaded yet.</p>
+<% } %>
+</div>
             
               
             

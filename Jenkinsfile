@@ -3,6 +3,18 @@ pipeline {
         tools {
           nodejs 'nodeJs-24'
         }
+environment {
+        // Render configuration
+        RENDER_APP_URL = 'https://gallery-crju.onrender.com'
+
+        // Email configuration
+        EMAIL_RECIPIENT = 'jacobtaraya@gmail.com'
+
+        // Slack configuration
+        SLACK_CHANNEL = '#all-jacobip'
+    }
+
+        
 
     triggers {
         githubPush() // Trigger build on GitHub push
