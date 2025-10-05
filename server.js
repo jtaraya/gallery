@@ -1,26 +1,14 @@
 const express = require('express');
-
 const bodyParser = require('body-parser');
-
 const mongoose = require('mongoose');
-
 const path = require('path');
 const config = require('./_config');
 
-const config = require('./_config');
-
-
 // Define routes
-
 let index = require('./routes/index');
-
 let image = require('./routes/image');
 
-<<<<<<< HEAD
-
-
-// Initializing the application
-
+// Initializing the app
 const app = express();
 
 // connecting the database
@@ -41,21 +29,6 @@ mongoose.connect(dbURI, {
 })
 .then(() => console.log(`Database connected successfully [${env}]`))
 .catch(err => console.error('MongoDB connection error:', err));
-=======
-// Initializing the app
-const app = express();
-
-// connecting the database
-
-const MONGODB_URI = process.env.MONGODB_URI || config.mongoURI[app.settings.env]
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true  },(err)=>{
-    if (err) {
-        console.log(err)
-    }else{
-        console.log(`Connected to Database: ${MONGODB_URI}`)
-    }
-});
->>>>>>> 18ece3ba0c11375ef695f05c8c5c46d1e83b4531
 
 // test if the database has connected successfully
 // let db = mongoose.connection;
