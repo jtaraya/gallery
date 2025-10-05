@@ -1,46 +1,34 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const path = require('path');
-
-// Define routes
-let index = require('./routes/index');
-let image = require('./routes/image');
-
-// connecting the database
-let mongodb_url = 'mongodb://localhost:27017/';
-let dbName = 'darkroom';
-mongoose.connect(`${mongodb_url}${dbName}`,{ useNewUrlParser: true , useUnifiedTopology: true }, (err)=>{
-    if (err) console.log(err)
-});
-
-// test if the database has connected successfully
-let db = mongoose.connection;
-db.once('open', ()=>{
-    console.log('Database connected successfully')
-})
-
-// Initializing the app
-const app = express();
-
-
-// View Engine
-app.set('view engine', 'ejs');
-
-// Set up the public folder;
-app.use(express.static(path.join(__dirname, 'public')));
-
-// body parser middleware
-app.use(express.json())
-
-
-app.use('/', index);
-app.use('/image', image);
-
-
-
- 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT,() =>{
-    console.log(`Server is listening at http://localhost:${PORT}`)
-});
+{
+  "name": "dark-room",
+  "version": "1.0.0",
+  "description": "Image upload gallery with Express and MongoDB",
+  "main": "server.js",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "mocha --exit"
+  },
+  "keywords": [],
+  "author": "Jacob Taraya",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.12.2",
+    "body-parser": "^1.19.0",
+    "busboy": "^1.6.0",
+    "dotenv": "^17.2.2",
+    "ejs": "^3.1.3",
+    "express": "^4.21.2",
+    "method-override": "^3.0.0",
+    "mongodb": "^3.5.8",
+    "mongoose": "^6.13.8",
+    "multer": "^2.0.2",
+    "uuid": "^8.1.0"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "chai-http": "^5.1.2",
+    "mocha": "^11.7.2"
+  }
+}
