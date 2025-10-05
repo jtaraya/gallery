@@ -10,7 +10,11 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config();
 
+<<<<<<< HEAD
 const app = express();
+=======
+
+>>>>>>> 18ece3ba0c11375ef695f05c8c5c46d1e83b4531
 
 // MongoDB connection
 const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER}/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
