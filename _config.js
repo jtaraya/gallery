@@ -1,23 +1,9 @@
 var config = {}
 
-// Update to have your correct username and password
 config.mongoURI = {
-  production: 'mongodb+srv://jtaraya:Code_Zone$23@gallery.zbclsqw.mongodb.net/darkroom-prod?retryWrites=true&w=majority&appName=Cluster0',
-  development: 'mongodb+srv://jtaraya:Code_Zone$23@gallery.zbclsqw.mongodb.net/darkroom-dev?retryWrites=true&w=majority&appName=Cluster0',
-  test: 'mongodb+srv://jtaraya:Code_Zone$23@gallery.zbclsqw.mongodb.net/darkroom-test?retryWrites=true&w=majority&appName=Cluster0',
+  production: process.env.MONGODB_URI || 'mongodb://localhost:27017/darkroom-prod',
+  development: 'mongodb://localhost:27017/darkroom-dev',
+  test: 'mongodb://localhost:27017/darkroom-test',
 }
 
 module.exports = config;
-
-
-// module.exports = {
-//   development: {
-//     db: 'mongodb+srv://jtaraya:Code_Zone$23@gallery.zbclsqw.mongodb.net/darkroom-dev?retryWrites=true&w=majority'
-//   },
-//   test: {
-//     db: 'mongodb+srv://jtaraya:Code_Zone$23@gallery.zbclsqw.mongodb.net/darkroom-test?retryWrites=true&w=majority'
-//   },
-//   production: {
-//     db: process.env.MONGODB_URI || 'mongodb+srv://jtaraya:Code_Zone$23@gallery.zbclsqw.mongodb.net/darkroom-prod?retryWrites=true&w=majority'
-//   }
-// };
