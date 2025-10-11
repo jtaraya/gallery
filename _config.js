@@ -1,14 +1,9 @@
 var config = {}
 
-// MongoDB configuration using environment variables
-const username = process.env.MONGO_USERNAME;
-const password = process.env.MONGO_PASSWORD;
-const cluster = process.env.MONGO_CLUSTER;
-
-// Update to have your correct username and password
 config.mongoURI = {
-    production: `mongodb+srv://${username}:${password}@${cluster}/darkroom?retryWrites=true&w=majority`,
-    development: `mongodb+srv://${username}:${password}@${cluster}/darkroom-dev?retryWrites=true&w=majority`,
-    test: `mongodb+srv://${username}:${password}@${cluster}/darkroom-test?retryWrites=true&w=majority`,
+  production: process.env.MONGODB_URI || 'mongodb://localhost:27017/darkroom-prod',
+  development: 'mongodb://localhost:27017/darkroom-dev',
+  test: 'mongodb://localhost:27017/darkroom-test',
 }
+
 module.exports = config;
